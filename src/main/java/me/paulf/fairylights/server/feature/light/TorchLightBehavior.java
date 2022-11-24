@@ -1,8 +1,8 @@
 package me.paulf.fairylights.server.feature.light;
 
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 public class TorchLightBehavior implements BrightnessLightBehavior {
     private final double offset;
@@ -27,7 +27,7 @@ public class TorchLightBehavior implements BrightnessLightBehavior {
     }
 
     @Override
-    public void tick(final World world, final Vector3d origin, final Light<?> light) {
+    public void tick(final Level world, final Vec3 origin, final Light<?> light) {
         if (world.rand.nextFloat() < 0.08F) {
             this.createParticles(world, origin, light);
         }

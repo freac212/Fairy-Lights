@@ -1,14 +1,16 @@
 package me.paulf.fairylights.client.model.light;
 
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
+
 public class GhostLightModel extends ColorLightModel {
     public GhostLightModel() {
-        final ModelRenderer littleFace = new ModelRenderer(this, 40, 17);
+        final ModelPart littleFace = new ModelPart(this, 40, 17);
         littleFace.setRotationPoint(0.0F, -1.0F, -2.25F);
         littleFace.addBox(-1.5F, -1.5F, 0, 3, 3, 0, 0);
         littleFace.rotateAngleX = Mth.PI;

@@ -8,19 +8,19 @@ import me.paulf.fairylights.util.styledstring.Style;
 import me.paulf.fairylights.util.styledstring.StyledString;
 import me.paulf.fairylights.util.styledstring.StyledStringBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.SharedConstants;
+import net.minecraft.SharedConstants;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public final class StyledTextFieldWidget extends Widget implements IRenderable, IGuiEventListener {
+public final class StyledTextFieldWidget extends AbstractWidget implements Widget, GuiEventListener {
     private static final Predicate<String> ALWAYS_TRUE = str -> true;
 
     private static final Function<String, String> IDENTITY_CHARACTER_TRANSFORMER = c -> c;
 
-    private final FontRenderer font;
+    private final Font font;
 
     private final int multiClickInterval = getMultiClickInterval();
 
@@ -93,14 +93,14 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
     private Style currentStyle;
 
     public StyledTextFieldWidget(
-        final FontRenderer font,
+        final Font font,
         final ColorButton colorBtn,
         final ToggleButton boldBtn,
         final ToggleButton italicBtn,
         final ToggleButton underlineBtn,
         final ToggleButton strikethroughBtn,
         final int x, final int y, final int width, final int height,
-        final ITextComponent msg
+        final Component msg
     ) {
         super(x, y, width, height, msg);
         this.font = font;
@@ -121,7 +121,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
         this.isVisible = isVisible;
     }
 
-    public void updateStyling(final TextFormatting styling, final boolean state) {
+    public void updateStyling(final ChatFormatting styling, final boolean state) {
         int start = this.caret;
         int end = this.selectionEnd;
         if (start == end) {
@@ -137,11 +137,11 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
         }
     }
 
-    public void setColor(final TextFormatting color) {
+    public void setColor(final ChatFormatting color) {
         this.setStyle(this.currentStyle.withColor(color));
     }
 
-    public void withStyling(final TextFormatting styling, final boolean state) {
+    public void withStyling(final ChatFormatting styling, final boolean state) {
         this.setStyle(this.currentStyle.withStyling(styling, state));
     }
 
@@ -154,7 +154,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
         this.strikethroughBtn.setValue(style.isStrikethrough());
     }
 
-    public TextFormatting getColor() {
+    public ChatFormatting getColor() {
         return this.currentStyle.getColor();
     }
 
@@ -214,7 +214,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
     }
 
     public void setCaret(final int pos, final boolean changeColor) {
-        this.caret = MathHelper.clamp(pos, 0, this.value.length());
+        this.caret = Mth.clamp(pos, 0, this.value.length());
         this.setSelectionPos(this.caret);
         if (changeColor) {
             this.setCurrentStyleByIndex(this.caret);
@@ -291,7 +291,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
 
     public void setSelectionPos(final int pos) {
         final int len = this.value.length();
-        this.selectionEnd = MathHelper.clamp(pos, 0, len);
+        this.selectionEnd = Mth.clamp(pos, 0, len);
         if (this.lineScrollOffset > len) {
             this.lineScrollOffset = len;
         }
@@ -301,7 +301,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
         } else if (this.selectionEnd <= this.lineScrollOffset) {
             this.lineScrollOffset = this.selectionEnd;
         }
-        this.lineScrollOffset = MathHelper.clamp(this.lineScrollOffset, 0, len);
+        this.lineScrollOffset = Mth.clamp(this.lineScrollOffset, 0, len);
         if (this.caret != this.selectionEnd) {
             this.updateSelectionControls();
         }
@@ -309,7 +309,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
 
     private void updateSelectionControls() {
         final StyledString selected = this.getSelectedText();
-        TextFormatting color = null;
+        ChatFormatting color = null;
         boolean consistantColor = true;
         boolean bold = true, italic = true, underline = true, strikethrough = true;
         for (int i = 0; i < selected.length(); i++) {
@@ -844,7 +844,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
         }
         if (visibleText.length() > 0) {
             final ITextComponent beforeCaret = (isCaretVisible ? visibleText.substring(0, visibleCaret) : visibleText).toTextComponent();
-            textX = this.font.func_243246_a(stack, beforeCaret, offsetX, offsetY, textColor);
+            textX = this.font.drawShadow(stack, beforeCaret, offsetX, offsetY, textColor);
         }
         final int caretX;
         if (isCaretVisible) {
@@ -853,7 +853,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
             caretX = visibleCaret > 0 ? offsetX + this.width - 6 : offsetX;
         }
         if (visibleText.length() > 0 && isCaretVisible && visibleCaret < visibleText.length()) {
-            textX = this.font.func_243246_a(stack, visibleText.substring(visibleCaret).toTextComponent(), textX, offsetY, textColor);
+            textX = this.font.drawShadow(stack, visibleText.substring(visibleCaret).toTextComponent(), textX, offsetY, textColor);
         }
         if (drawCaret) {
             final int rgb = StyledString.getColor(this.currentStyle.getColor());
@@ -900,7 +900,7 @@ public final class StyledTextFieldWidget extends Widget implements IRenderable, 
             }
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            this.font.func_243246_a(stack, this.getSelectedText().toTextComponent(), mouseX + 5, mouseY + 5, textColor | 0xBF000000);
+            this.font.drawShadow(stack, this.getSelectedText().toTextComponent(), mouseX + 5, mouseY + 5, textColor | 0xBF000000);
             RenderSystem.disableBlend();
         }
     }

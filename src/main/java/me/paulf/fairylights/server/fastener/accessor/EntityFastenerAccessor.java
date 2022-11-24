@@ -3,12 +3,12 @@ package me.paulf.fairylights.server.fastener.accessor;
 import me.paulf.fairylights.server.capability.CapabilityHandler;
 import me.paulf.fairylights.server.fastener.EntityFastener;
 import me.paulf.fairylights.server.fastener.Fastener;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
@@ -26,7 +26,7 @@ public abstract class EntityFastenerAccessor<E extends Entity> implements Fasten
     private E entity;
 
     @Nullable
-    private Vector3d pos;
+    private Vec3 pos;
 
     public EntityFastenerAccessor(final Class<? extends E> entityClass) {
         this(entityClass, (UUID) null);

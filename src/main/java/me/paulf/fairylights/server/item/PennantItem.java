@@ -1,11 +1,11 @@
 package me.paulf.fairylights.server.item;
 
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 public class PennantItem extends Item {
     public PennantItem(final Item.Properties properties) {
@@ -13,7 +13,7 @@ public class PennantItem extends Item {
     }
 
     @Override
-    public ITextComponent getDisplayName(final ItemStack stack) {
+    public Component getDisplayName(final ItemStack stack) {
         return DyeableItem.getDisplayName(stack, super.getDisplayName(stack));
     }
 

@@ -11,13 +11,13 @@ import me.paulf.fairylights.util.crafting.ingredient.GenericIngredient;
 import me.paulf.fairylights.util.crafting.ingredient.RegularIngredient;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ICraftingRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -31,12 +31,12 @@ import java.util.Set;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
-public final class GenericRecipe implements ICraftingRecipe {
+public final class GenericRecipe implements CraftingRecipe {
     private final ResourceLocation id;
 
     public static final EmptyRegularIngredient EMPTY = new EmptyRegularIngredient();
 
-    private final Supplier<? extends IRecipeSerializer<GenericRecipe>> serializer;
+    private final Supplier<? extends RecipeSerializer<GenericRecipe>> serializer;
 
     private final ItemStack output;
 
@@ -56,7 +56,7 @@ public final class GenericRecipe implements ICraftingRecipe {
 
     private int room;
 
-    GenericRecipe(final ResourceLocation id, final Supplier<? extends IRecipeSerializer<GenericRecipe>> serializer, final ItemStack output, final RegularIngredient[] ingredients, final AuxiliaryIngredient<?>[] auxiliaryIngredients, final int width, final int height, final int outputIngredient) {
+    GenericRecipe(final ResourceLocation id, final Supplier<? extends RecipeSerializer<GenericRecipe>> serializer, final ItemStack output, final RegularIngredient[] ingredients, final AuxiliaryIngredient<?>[] auxiliaryIngredients, final int width, final int height, final int outputIngredient) {
         Preconditions.checkArgument(width > 0, "width must be greater than zero");
         Preconditions.checkArgument(height > 0, "height must be greater than zero");
         this.id = Objects.requireNonNull(id, "name");

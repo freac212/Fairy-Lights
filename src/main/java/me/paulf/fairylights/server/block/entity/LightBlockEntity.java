@@ -9,28 +9,28 @@ import me.paulf.fairylights.util.Mth;
 import me.paulf.fairylights.util.matrix.MatrixStack;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.properties.AttachFace;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.World;
 
-public class LightBlockEntity extends TileEntity {
+public class LightBlockEntity extends BlockEntity {
     private Light<?> light;
 
     private boolean on = true;
 
     public LightBlockEntity() {
         super(FLBlockEntities.LIGHT.get());
-        this.light = new Light<>(0, Vector3d.ZERO, 0.0F, 0.0F, ItemStack.EMPTY, SimpleLightVariant.FAIRY_LIGHT, 0.0F);
+        this.light = new Light<>(0, Vec3.ZERO, 0.0F, 0.0F, ItemStack.EMPTY, SimpleLightVariant.FAIRY_LIGHT, 0.0F);
     }
 
     public Light<?> getLight() {
@@ -38,7 +38,7 @@ public class LightBlockEntity extends TileEntity {
     }
 
     public void setItemStack(final ItemStack stack) {
-        this.light = new Light<>(0, Vector3d.ZERO, 0.0F, 0.0F, stack, LightVariant.get(stack).orElse(SimpleLightVariant.FAIRY_LIGHT), 0.0F);
+        this.light = new Light<>(0, Vec3.ZERO, 0.0F, 0.0F, stack, LightVariant.get(stack).orElse(SimpleLightVariant.FAIRY_LIGHT), 0.0F);
         this.markDirty();
     }
 

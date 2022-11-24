@@ -14,11 +14,11 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocus.Mode;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICustomCraftingCategoryExtension;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Size2i;
 import org.apache.logging.log4j.LogManager;
@@ -106,14 +106,14 @@ public final class GenericRecipeWrapper implements ICustomCraftingCategoryExtens
     }
 
     private void forOutputMatches(final BiConsumer<ItemStack, ItemStack> outputConsumer) {
-        final CraftingInventory crafting = new CraftingInventory(new Container(null, 0) {
+        final CraftingContainer crafting = new CraftingContainer(new AbstractContainerMenu(null, 0) {
             @Override
-            public boolean canInteractWith(final PlayerEntity player) {
+            public boolean canInteractWith(final Player player) {
                 return false;
             }
 
             @Override
-            public void onCraftMatrixChanged(final IInventory inventory) {}
+            public void onCraftMatrixChanged(final Container inventory) {}
         }, this.getSize().width, this.getSize().height);
         if (this.subtypeIndex == -1) {
             for (int i = 0; i < this.minimalInputStacks.size(); i++) {

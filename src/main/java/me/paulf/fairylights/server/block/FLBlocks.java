@@ -3,7 +3,7 @@ package me.paulf.fairylights.server.block;
 import me.paulf.fairylights.FairyLights;
 import me.paulf.fairylights.server.item.LightVariant;
 import me.paulf.fairylights.server.item.SimpleLightVariant;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -12,12 +12,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
 public final class FLBlocks {
     private FLBlocks() {}
 
     public static final DeferredRegister<Block> REG = DeferredRegister.create(ForgeRegistries.BLOCKS, FairyLights.ID);
 
-    public static final RegistryObject<FastenerBlock> FASTENER = REG.register("fastener", () -> new FastenerBlock(Block.Properties.create(Material.MISCELLANEOUS).noDrops()));
+    public static final RegistryObject<FastenerBlock> FASTENER = REG.register("fastener", () -> new FastenerBlock(BlockBehaviour.Properties.create(Material.MISCELLANEOUS).noDrops()));
 
     public static final RegistryObject<LightBlock> FAIRY_LIGHT = REG.register("fairy_light", FLBlocks.createLight(SimpleLightVariant.FAIRY_LIGHT));
 
@@ -63,7 +65,7 @@ public final class FLBlocks {
         return createLight(variant, LightBlock::new);
     }
 
-    private static Supplier<LightBlock> createLight(final LightVariant<?> variant, final BiFunction<Block.Properties, LightVariant<?>, LightBlock> factory) {
-        return () -> factory.apply(Block.Properties.create(Material.MISCELLANEOUS).setLightLevel(state -> state.get(LightBlock.LIT) ? 15 : 0).notSolid(), variant);
+    private static Supplier<LightBlock> createLight(final LightVariant<?> variant, final BiFunction<AbstractBlock.Properties, LightVariant<?>, LightBlock> factory) {
+        return () -> factory.apply(AbstractBlock.Properties.create(Material.MISCELLANEOUS).setLightLevel(state -> state.get(LightBlock.LIT) ? 15 : 0).notSolid(), variant);
     }
 }

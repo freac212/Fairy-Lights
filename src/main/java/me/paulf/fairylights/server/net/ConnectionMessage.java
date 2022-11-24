@@ -4,8 +4,8 @@ import me.paulf.fairylights.server.fastener.Fastener;
 import me.paulf.fairylights.server.fastener.FastenerType;
 import me.paulf.fairylights.server.fastener.accessor.FastenerAccessor;
 import me.paulf.fairylights.server.connection.Connection;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.World;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public abstract class ConnectionMessage implements Message {
     }
 
     @Override
-    public void encode(final PacketBuffer buf) {
+    public void encode(final FriendlyByteBuf buf) {
         buf.writeBlockPos(this.pos);
         buf.writeCompoundTag(FastenerType.serialize(this.accessor));
         buf.writeUniqueId(this.uuid);

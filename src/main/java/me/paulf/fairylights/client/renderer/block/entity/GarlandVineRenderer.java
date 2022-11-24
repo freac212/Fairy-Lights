@@ -1,13 +1,13 @@
 package me.paulf.fairylights.client.renderer.block.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import me.paulf.fairylights.client.ClientProxy;
 import me.paulf.fairylights.util.Catenary;
 import me.paulf.fairylights.server.connection.GarlandVineConnection;
 import me.paulf.fairylights.util.Mth;
 import me.paulf.fairylights.util.RandomArray;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -30,10 +30,10 @@ public class GarlandVineRenderer extends ConnectionRenderer<GarlandVineConnectio
     }
 
     @Override
-    protected void render(final GarlandVineConnection conn, final Catenary catenary, final float delta, final MatrixStack matrix, final IRenderTypeBuffer source, final int packedLight, final int packedOverlay) {
+    protected void render(final GarlandVineConnection conn, final Catenary catenary, final float delta, final PoseStack matrix, final MultiBufferSource source, final int packedLight, final int packedOverlay) {
         super.render(conn, catenary, delta, matrix, source, packedLight, packedOverlay);
         final int hash = conn.getUUID().hashCode();
-        final IVertexBuilder buf = ClientProxy.SOLID_TEXTURE.getBuffer(source, RenderType::getEntityCutout);
+        final VertexConsumer buf = ClientProxy.SOLID_TEXTURE.getBuffer(source, RenderType::getEntityCutout);
         catenary.visitPoints(0.25F, false, (index, x, y, z, yaw, pitch) -> {
             matrix.push();
             matrix.translate(x, y, z);

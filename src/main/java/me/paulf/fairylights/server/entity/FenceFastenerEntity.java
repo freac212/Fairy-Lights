@@ -11,10 +11,10 @@ import me.paulf.fairylights.server.net.clientbound.UpdateEntityFastenerMessage;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.item.HangingEntity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -29,9 +29,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -42,15 +42,15 @@ import java.io.IOException;
 public final class FenceFastenerEntity extends HangingEntity implements IEntityAdditionalSpawnData {
     private int surfaceCheckTime;
 
-    public FenceFastenerEntity(final EntityType<? extends FenceFastenerEntity> type, final World world) {
+    public FenceFastenerEntity(final EntityType<? extends FenceFastenerEntity> type, final Level world) {
         super(type, world);
     }
 
-    public FenceFastenerEntity(final World world) {
+    public FenceFastenerEntity(final Level world) {
         this(FLEntities.FASTENER.get(), world);
     }
 
-    public FenceFastenerEntity(final World world, final BlockPos pos) {
+    public FenceFastenerEntity(final Level world, final BlockPos pos) {
         this(world);
         this.setPosition(pos.getX(), pos.getY(), pos.getZ());
     }
@@ -66,7 +66,7 @@ public final class FenceFastenerEntity extends HangingEntity implements IEntityA
     }
 
     @Override
-    public float getEyeHeight(final Pose pose, final EntitySize size) {
+    public float getEyeHeight(final Pose pose, final EntityDimensions size) {
         /*
          * Because this entity is inside of a block when
          * EntityLivingBase#canEntityBeSeen performs its

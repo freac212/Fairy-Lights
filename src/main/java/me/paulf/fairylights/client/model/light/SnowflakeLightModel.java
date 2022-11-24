@@ -1,13 +1,15 @@
 package me.paulf.fairylights.client.model.light;
 
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 import java.util.Random;
 
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
+
 public class SnowflakeLightModel extends ColorLightModel {
     public SnowflakeLightModel() {
-        final ModelRenderer connector = new ModelRenderer(this, 90, 40);
+        final ModelPart connector = new ModelPart(this, 90, 40);
         connector.addBox(-1.0F, 0.2F, -1.0F, 2.0F, 1.0F, 2.0F, -0.05F);
         this.unlit.addChild(connector);
         final BulbBuilder bulb = this.createBulb();

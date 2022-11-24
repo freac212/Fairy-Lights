@@ -3,9 +3,9 @@ package me.paulf.fairylights.server.block;
 import me.paulf.fairylights.server.block.entity.LightBlockEntity;
 import me.paulf.fairylights.server.item.DyeableItem;
 import me.paulf.fairylights.server.item.LightVariant;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFaceBlock;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -13,10 +13,10 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
-import net.minecraft.state.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -26,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
@@ -39,7 +39,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class LightBlock extends HorizontalFaceBlock {
+import net.minecraft.block.AbstractBlock.Properties;
+
+public class LightBlock extends FaceAttachedHorizontalDirectionalBlock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     private static final VoxelShape MIN_ANCHOR_SHAPE = Block.makeCuboidShape(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);

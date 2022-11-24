@@ -2,6 +2,8 @@ package me.paulf.fairylights.client.model.light;
 
 import me.paulf.fairylights.util.Mth;
 
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
+
 public class ColorOilLanternModel extends ColorLightModel {
     public ColorOilLanternModel() {
         this.unlit.rotateAngleY = -Mth.PI / 2.0F;

@@ -1,7 +1,7 @@
 package me.paulf.fairylights.server.net;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -22,7 +22,7 @@ public class ClientMessageContext extends MessageContext {
         return Minecraft.getInstance();
     }
 
-    public ClientWorld getWorld() {
+    public ClientLevel getWorld() {
         return Objects.requireNonNull(this.getMinecraft().world);
     }
 

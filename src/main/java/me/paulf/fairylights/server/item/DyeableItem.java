@@ -1,11 +1,11 @@
 package me.paulf.fairylights.server.item;
 
-import net.minecraft.item.DyeColor;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public final class DyeableItem {
     private DyeableItem() {}
 
-    public static IFormattableTextComponent getColorName(final int color) {
+    public static MutableComponent getColorName(final int color) {
         final int r = color >> 16 & 0xFF;
         final int g = color >> 8 & 0xFF;
         final int b = color & 0xFF;
@@ -36,7 +36,7 @@ public final class DyeableItem {
                 closestDist = dist;
             }
         }
-        final IFormattableTextComponent colorName = new TranslationTextComponent("color.fairylights." + closest.getTranslationKey());
+        final MutableComponent colorName = new TranslatableComponent("color.fairylights." + closest.getTranslationKey());
         return closestDist == 0 ? colorName : new TranslationTextComponent("format.fairylights.dyed_colored", colorName);
     }
 

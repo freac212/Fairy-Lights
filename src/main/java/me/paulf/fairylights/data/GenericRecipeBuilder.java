@@ -9,7 +9,7 @@ import net.minecraft.advancements.IRequirementsStrategy;
 import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Objects;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class GenericRecipeBuilder {
-    private final IRecipeSerializer<?> serializer;
+    private final RecipeSerializer<?> serializer;
 
     private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
 

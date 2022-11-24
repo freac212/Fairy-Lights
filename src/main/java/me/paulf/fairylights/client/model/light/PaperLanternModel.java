@@ -3,6 +3,8 @@ package me.paulf.fairylights.client.model.light;
 import me.paulf.fairylights.util.Mth;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
+
 public class PaperLanternModel extends ColorLightModel {
     public PaperLanternModel() {
         this.unlit.setTextureOffset(34, 18);

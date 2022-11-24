@@ -1,9 +1,9 @@
 package me.paulf.fairylights.util;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
@@ -17,7 +17,7 @@ public final class Utils {
         return values[ordinal < 0 || ordinal >= values.length ? 0 : ordinal];
     }
 
-    public static ITextComponent formatRecipeTooltip(final String key) {
+    public static Component formatRecipeTooltip(final String key) {
         return formatRecipeTooltipValue(I18n.format(key));
     }
 

@@ -26,7 +26,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -54,7 +54,7 @@ import java.util.Random;
 
 public final class ClientProxy extends ServerProxy {
     @SuppressWarnings("deprecation")
-    public static final RenderMaterial SOLID_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(FairyLights.ID, "entity/connections"));
+    public static final Material SOLID_TEXTURE = new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(FairyLights.ID, "entity/connections"));
 
     @SuppressWarnings("deprecation")
     public static final RenderMaterial TRANSLUCENT_TEXTURE = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(FairyLights.ID, "entity/connections"));

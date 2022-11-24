@@ -4,14 +4,14 @@ import me.paulf.fairylights.server.config.FLConfig;
 import me.paulf.fairylights.server.feature.HangingFeature;
 import me.paulf.fairylights.server.item.LightVariant;
 import me.paulf.fairylights.server.sound.FLSounds;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 public final class Light<T extends LightBehavior> extends HangingFeature {
     private static final int SWAY_RATE = 10;
@@ -38,7 +38,7 @@ public final class Light<T extends LightBehavior> extends HangingFeature {
 
     private boolean powered;
 
-    public Light(final int index, final Vector3d point, final float yaw, final float pitch, final ItemStack item, final LightVariant<T> variant, final float descent) {
+    public Light(final int index, final Vec3 point, final float yaw, final float pitch, final ItemStack item, final LightVariant<T> variant, final float descent) {
         super(index, point, yaw, pitch, 0.0F, descent);
         this.item = item;
         this.variant = variant;
@@ -57,15 +57,15 @@ public final class Light<T extends LightBehavior> extends HangingFeature {
         return this.variant;
     }
 
-    public void jingle(final World world, final Vector3d origin, final int note) {
+    public void jingle(final Level world, final Vec3 origin, final int note) {
         this.jingle(world, origin, note, ParticleTypes.NOTE);
     }
 
-    public void jingle(final World world, final Vector3d origin, final int note, final BasicParticleType particle) {
+    public void jingle(final Level world, final Vec3 origin, final int note, final SimpleParticleType particle) {
         this.jingle(world, origin, note, FLSounds.JINGLE_BELL.get(), particle);
     }
 
-    public void jingle(final World world, final Vector3d origin, final int note, final SoundEvent sound, final BasicParticleType... particles) {
+    public void jingle(final Level world, final Vec3 origin, final int note, final SoundEvent sound, final SimpleParticleType... particles) {
         if (world.isRemote) {
             final double x = origin.x + this.point.x;
             final double y = origin.y + this.point.y;

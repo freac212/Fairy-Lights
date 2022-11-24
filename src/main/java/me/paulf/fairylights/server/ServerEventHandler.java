@@ -24,18 +24,18 @@ import me.paulf.fairylights.server.sound.FLSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.entity.item.LeashKnotEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SBlockActionPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -71,7 +71,7 @@ public final class ServerEventHandler {
     @SubscribeEvent
     public void onEntityJoinWorld(final EntityJoinWorldEvent event) {
         final Entity entity = event.getEntity();
-        if (entity instanceof PlayerEntity || entity instanceof FenceFastenerEntity) {
+        if (entity instanceof Player || entity instanceof FenceFastenerEntity) {
             entity.getCapability(CapabilityHandler.FASTENER_CAP).ifPresent(f -> f.setWorld(event.getWorld()));
         }
     }
@@ -79,16 +79,16 @@ public final class ServerEventHandler {
     @SubscribeEvent
     public void onAttachEntityCapability(final AttachCapabilitiesEvent<Entity> event) {
         final Entity entity = event.getObject();
-        if (entity instanceof PlayerEntity) {
-            event.addCapability(CapabilityHandler.FASTENER_ID, new PlayerFastener((PlayerEntity) entity));
+        if (entity instanceof Player) {
+            event.addCapability(CapabilityHandler.FASTENER_ID, new PlayerFastener((Player) entity));
         } else if (entity instanceof FenceFastenerEntity) {
             event.addCapability(CapabilityHandler.FASTENER_ID, new FenceFastener((FenceFastenerEntity) entity));
         }
     }
 
     @SubscribeEvent
-    public void onAttachBlockEntityCapability(final AttachCapabilitiesEvent<TileEntity> event) {
-        final TileEntity entity = event.getObject();
+    public void onAttachBlockEntityCapability(final AttachCapabilitiesEvent<BlockEntity> event) {
+        final BlockEntity entity = event.getObject();
         if (entity instanceof FastenerBlockEntity) {
             event.addCapability(CapabilityHandler.FASTENER_ID, new BlockFastener((FastenerBlockEntity) entity, ServerProxy.buildBlockView()));
         }

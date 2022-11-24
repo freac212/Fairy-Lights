@@ -3,8 +3,8 @@ package me.paulf.fairylights.server.net.clientbound;
 import me.paulf.fairylights.server.capability.CapabilityHandler;
 import me.paulf.fairylights.server.net.ClientMessageContext;
 import me.paulf.fairylights.server.net.Message;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketBuffer;
 
 import java.util.function.BiConsumer;
@@ -12,11 +12,11 @@ import java.util.function.BiConsumer;
 public final class UpdateEntityFastenerMessage implements Message {
     private int entityId;
 
-    private CompoundNBT compound;
+    private CompoundTag compound;
 
     public UpdateEntityFastenerMessage() {}
 
-    public UpdateEntityFastenerMessage(final Entity entity, final CompoundNBT compound) {
+    public UpdateEntityFastenerMessage(final Entity entity, final CompoundTag compound) {
         this.entityId = entity.getEntityId();
         this.compound = compound;
     }

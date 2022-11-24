@@ -18,11 +18,11 @@ import me.paulf.fairylights.util.CubicBezier;
 import me.paulf.fairylights.util.NBTSerializable;
 import me.paulf.fairylights.util.Utils;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -30,7 +30,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -59,7 +59,7 @@ public abstract class Connection implements NBTSerializable {
     @Nullable
     private FastenerAccessor prevDestination;
 
-    protected World world;
+    protected Level world;
 
     @Nullable
     private Catenary catenary;
@@ -79,7 +79,7 @@ public abstract class Connection implements NBTSerializable {
 
     private boolean drop;
 
-    public Connection(final ConnectionType<?> type, final World world, final Fastener<?> fastener, final UUID uuid) {
+    public Connection(final ConnectionType<?> type, final Level world, final Fastener<?> fastener, final UUID uuid) {
         this.type = type;
         this.world = world;
         this.fastener = fastener;
@@ -101,11 +101,11 @@ public abstract class Connection implements NBTSerializable {
         return this.prevCatenary == null ? this.catenary : this.prevCatenary;
     }
 
-    public void setWorld(final World world) {
+    public void setWorld(final Level world) {
         this.world = world;
     }
 
-    public final World getWorld() {
+    public final Level getWorld() {
         return this.world;
     }
 
@@ -149,7 +149,7 @@ public abstract class Connection implements NBTSerializable {
 
     public ItemStack getItemStack() {
         final ItemStack stack = new ItemStack(this.getType().getItem());
-        final CompoundNBT tagCompound = this.serializeLogic();
+        final CompoundTag tagCompound = this.serializeLogic();
         if (!tagCompound.isEmpty()) {
             stack.setTag(tagCompound);
         }
@@ -164,7 +164,7 @@ public abstract class Connection implements NBTSerializable {
         return this.fastener.isMoving() || this.destination.get(this.world, false).filter(Fastener::isMoving).isPresent();
     }
 
-    public final boolean isModifiable(final PlayerEntity player) {
+    public final boolean isModifiable(final Player player) {
         return this.world.isBlockModifiable(player, this.fastener.getPos());
     }
 

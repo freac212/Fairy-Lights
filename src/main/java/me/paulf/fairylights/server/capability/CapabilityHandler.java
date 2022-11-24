@@ -2,10 +2,10 @@ package me.paulf.fairylights.server.capability;
 
 import me.paulf.fairylights.FairyLights;
 import me.paulf.fairylights.server.fastener.Fastener;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -27,13 +27,13 @@ public final class CapabilityHandler {
 
     public static class FastenerStorage<T extends Fastener<?>> implements IStorage<T> {
         @Override
-        public CompoundNBT writeNBT(final Capability<T> capability, final T instance, final Direction side) {
+        public CompoundTag writeNBT(final Capability<T> capability, final T instance, final Direction side) {
             return instance.serializeNBT();
         }
 
         @Override
-        public void readNBT(final Capability<T> capability, final T instance, final Direction side, final INBT nbt) {
-            instance.deserializeNBT((CompoundNBT) nbt);
+        public void readNBT(final Capability<T> capability, final T instance, final Direction side, final Tag nbt) {
+            instance.deserializeNBT((CompoundTag) nbt);
         }
     }
 }

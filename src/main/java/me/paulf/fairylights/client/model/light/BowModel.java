@@ -3,11 +3,11 @@ package me.paulf.fairylights.client.model.light;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class BowModel extends Model {
-    private final ModelRenderer root;
+    private final ModelPart root;
 
     public BowModel() {
         super(RenderType::getEntityCutout);

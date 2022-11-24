@@ -3,7 +3,7 @@ package me.paulf.fairylights.server.fastener;
 import me.paulf.fairylights.server.block.entity.FastenerBlockEntity;
 import me.paulf.fairylights.server.fastener.accessor.BlockFastenerAccessor;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3d;
@@ -16,7 +16,7 @@ public final class BlockFastener extends AbstractFastener<BlockFastenerAccessor>
     public BlockFastener(final FastenerBlockEntity fastener, final BlockView view) {
         this.fastener = fastener;
         this.view = view;
-        this.bounds = new AxisAlignedBB(fastener.getPos());
+        this.bounds = new AABB(fastener.getPos());
         this.setWorld(fastener.getWorld());
     }
 

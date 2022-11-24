@@ -12,16 +12,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.item.HangingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -30,6 +30,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 
 import java.util.Optional;
+
+import net.minecraft.world.item.Item.Properties;
 
 public abstract class ConnectionItem extends Item {
     private final RegistryObject<? extends ConnectionType<?>> type;
@@ -44,8 +46,8 @@ public abstract class ConnectionItem extends Item {
     }
 
     @Override
-    public ActionResultType onItemUse(final ItemUseContext context) {
-        final PlayerEntity user = context.getPlayer();
+    public InteractionResult onItemUse(final UseOnContext context) {
+        final Player user = context.getPlayer();
         if (user == null) {
             return super.onItemUse(context);
         }

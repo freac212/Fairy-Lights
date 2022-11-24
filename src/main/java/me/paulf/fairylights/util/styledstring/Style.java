@@ -1,6 +1,6 @@
 package me.paulf.fairylights.util.styledstring;
 
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
 
 public final class Style implements Comparable<Style> {
     private static final int COLOR_MASK = 0xF;
@@ -20,10 +20,10 @@ public final class Style implements Comparable<Style> {
     private final int value;
 
     public Style() {
-        this(TextFormatting.WHITE, false, false, false, false, false);
+        this(ChatFormatting.WHITE, false, false, false, false, false);
     }
 
-    public Style(final TextFormatting color, final boolean isBold, final boolean isStrikethrough, final boolean isUnderline, final boolean isItalic, final boolean isObfuscated) {
+    public Style(final ChatFormatting color, final boolean isBold, final boolean isStrikethrough, final boolean isUnderline, final boolean isItalic, final boolean isObfuscated) {
         this(Style.pack(color, isBold, isStrikethrough, isUnderline, isItalic, isObfuscated));
     }
 
@@ -35,8 +35,8 @@ public final class Style implements Comparable<Style> {
         return this.value;
     }
 
-    public TextFormatting getColor() {
-        return TextFormatting.fromColorIndex(this.value & COLOR_MASK);
+    public ChatFormatting getColor() {
+        return ChatFormatting.fromColorIndex(this.value & COLOR_MASK);
     }
 
     public boolean isObfuscated() {

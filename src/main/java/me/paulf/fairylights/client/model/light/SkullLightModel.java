@@ -1,11 +1,13 @@
 package me.paulf.fairylights.client.model.light;
 
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
+
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
 
 public class SkullLightModel extends ColorLightModel {
     public SkullLightModel() {
-        final ModelRenderer apertures = new ModelRenderer(this, 12, 10);
+        final ModelPart apertures = new ModelPart(this, 12, 10);
         apertures.setRotationPoint(0, -3, -2.75F);
         apertures.addBox(-1.5F, -1, 0, 3, 2, 0, 0);
         apertures.rotateAngleX = Mth.PI;

@@ -3,8 +3,8 @@ package me.paulf.fairylights.server.collision;
 import me.paulf.fairylights.server.feature.Feature;
 import me.paulf.fairylights.server.feature.FeatureType;
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nullable;
@@ -15,11 +15,11 @@ import java.util.function.IntFunction;
 public final class FeatureCollisionTree implements Collidable {
     private final FeatureType type;
 
-    public final AxisAlignedBB[] tree;
+    public final AABB[] tree;
 
     private final Feature[] nodeToFeature;
 
-    private FeatureCollisionTree(final FeatureType type, final AxisAlignedBB[] tree, final Feature[] nodeToFeature) {
+    private FeatureCollisionTree(final FeatureType type, final AABB[] tree, final Feature[] nodeToFeature) {
         this.type = type;
         this.tree = tree;
         this.nodeToFeature = nodeToFeature;
@@ -27,13 +27,13 @@ public final class FeatureCollisionTree implements Collidable {
 
     @Nullable
     @Override
-    public Intersection intersect(final Vector3d origin, final Vector3d end) {
+    public Intersection intersect(final Vec3 origin, final Vec3 end) {
         return this.intersect(origin, end, 0);
     }
 
     @Nullable
-    private Intersection intersect(final Vector3d origin, final Vector3d end, final int node) {
-        final Vector3d result;
+    private Intersection intersect(final Vec3 origin, final Vec3 end, final int node) {
+        final Vec3 result;
         if (this.tree[node].contains(origin)) {
             result = origin;
         } else {

@@ -35,7 +35,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
@@ -61,7 +61,7 @@ public final class ClientEventHandler {
 
     @Nullable
     public static Connection getHitConnection() {
-        final RayTraceResult result = Minecraft.getInstance().objectMouseOver;
+        final HitResult result = Minecraft.getInstance().objectMouseOver;
         if (result instanceof EntityRayTraceResult) {
             final Entity entity = ((EntityRayTraceResult) result).getEntity();
             if (entity instanceof HitConnection) {

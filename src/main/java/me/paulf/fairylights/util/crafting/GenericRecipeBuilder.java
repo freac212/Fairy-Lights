@@ -6,14 +6,14 @@ import me.paulf.fairylights.util.crafting.ingredient.BasicRegularIngredient;
 import me.paulf.fairylights.util.crafting.ingredient.InertBasicAuxiliaryIngredient;
 import me.paulf.fairylights.util.crafting.ingredient.LazyTagIngredient;
 import me.paulf.fairylights.util.crafting.ingredient.RegularIngredient;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public final class GenericRecipeBuilder {
 
     private final ResourceLocation name;
 
-    private final Supplier<? extends IRecipeSerializer<GenericRecipe>> serializer;
+    private final Supplier<? extends RecipeSerializer<GenericRecipe>> serializer;
 
     private ItemStack output;
 
@@ -44,19 +44,19 @@ public final class GenericRecipeBuilder {
 
     private final List<AuxiliaryIngredient<?>> auxiliaryIngredients = new ArrayList<>();
 
-    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends IRecipeSerializer<GenericRecipe>> serializer) {
+    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends RecipeSerializer<GenericRecipe>> serializer) {
         this(name, serializer, ItemStack.EMPTY);
     }
 
-    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends IRecipeSerializer<GenericRecipe>> serializer, final Item item) {
+    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends RecipeSerializer<GenericRecipe>> serializer, final Item item) {
         this(name, serializer, new ItemStack(item));
     }
 
-    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends IRecipeSerializer<GenericRecipe>> serializer, final Block block) {
+    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends RecipeSerializer<GenericRecipe>> serializer, final Block block) {
         this(name, serializer, new ItemStack(block));
     }
 
-    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends IRecipeSerializer<GenericRecipe>> serializer, final ItemStack output) {
+    public GenericRecipeBuilder(final ResourceLocation name, final Supplier<? extends RecipeSerializer<GenericRecipe>> serializer, final ItemStack output) {
         this.name = name;
         this.serializer = serializer;
         this.output = Objects.requireNonNull(output, "output");

@@ -1,34 +1,34 @@
 package me.paulf.fairylights.client.gui.component;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.paulf.fairylights.client.gui.EditLetteredConnectionScreen;
 import me.paulf.fairylights.util.Mth;
 import me.paulf.fairylights.util.styledstring.StyledString;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 import org.apache.commons.lang3.ArrayUtils;
 
 import static net.minecraft.util.text.TextFormatting.AQUA;
-import static net.minecraft.util.text.TextFormatting.BLACK;
+import staticnet.minecraft.ChatFormattingg.BLACK;
 import static net.minecraft.util.text.TextFormatting.BLUE;
-import static net.minecraft.util.text.TextFormatting.DARK_AQUA;
+import staticnet.minecraft.ChatFormattingg.DARK_AQUA;
 import static net.minecraft.util.text.TextFormatting.DARK_BLUE;
-import static net.minecraft.util.text.TextFormatting.DARK_GRAY;
+import staticnet.minecraft.ChatFormattingg.DARK_GRAY;
 import static net.minecraft.util.text.TextFormatting.DARK_GREEN;
-import static net.minecraft.util.text.TextFormatting.DARK_PURPLE;
+import staticnet.minecraft.ChatFormattingg.DARK_PURPLE;
 import static net.minecraft.util.text.TextFormatting.DARK_RED;
-import static net.minecraft.util.text.TextFormatting.GOLD;
+import staticnet.minecraft.ChatFormattingg.GOLD;
 import static net.minecraft.util.text.TextFormatting.GRAY;
-import static net.minecraft.util.text.TextFormatting.GREEN;
+import staticnet.minecraft.ChatFormattingg.GREEN;
 import static net.minecraft.util.text.TextFormatting.LIGHT_PURPLE;
-import static net.minecraft.util.text.TextFormatting.RED;
+import staticnet.minecraft.ChatFormattingg.RED;
 import static net.minecraft.util.text.TextFormatting.WHITE;
-import static net.minecraft.util.text.TextFormatting.YELLOW;
+import staticnet.minecraft.ChatFormattingg.YELLOW;
 
 public class PaletteButton extends Button {
     private static final int TEX_U = 0;
@@ -47,13 +47,13 @@ public class PaletteButton extends Button {
 
     private static final int COLOR_HEIGHT = 6;
 
-    private static final TextFormatting[] IDX_COLOR = {WHITE, GRAY, DARK_GRAY, BLACK, RED, DARK_RED, YELLOW, GOLD, LIGHT_PURPLE, DARK_PURPLE, GREEN, DARK_GREEN, BLUE, DARK_BLUE, AQUA, DARK_AQUA};
+    private static final ChatFormatting[] IDX_COLOR = {WHITE, GRAY, DARK_GRAY, BLACK, RED, DARK_RED, YELLOW, GOLD, LIGHT_PURPLE, DARK_PURPLE, GREEN, DARK_GREEN, BLUE, DARK_BLUE, AQUA, DARK_AQUA};
 
-    private static final int[] COLOR_IDX = Mth.invertMap(IDX_COLOR, TextFormatting::ordinal);
+    private static final int[] COLOR_IDX = Mth.invertMap(IDX_COLOR, ChatFormatting::ordinal);
 
     private final ColorButton colorBtn;
 
-    public PaletteButton(final int x, final int y, final ColorButton colorBtn, final ITextComponent msg, final Button.IPressable pressable) {
+    public PaletteButton(final int x, final int y, final ColorButton colorBtn, final Component msg, final Button.OnPress pressable) {
         super(x, y, 28, 28, msg, pressable);
         this.colorBtn = colorBtn;
     }
@@ -74,7 +74,7 @@ public class PaletteButton extends Button {
     }
 
     @Override
-    public void renderButton(final MatrixStack stack, final int mouseX, final int mouseY, final float delta) {
+    public void renderButton(final PoseStack stack, final int mouseX, final int mouseY, final float delta) {
         if (this.visible) {
             Minecraft.getInstance().getTextureManager().bindTexture(EditLetteredConnectionScreen.WIDGETS_TEXTURE);
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

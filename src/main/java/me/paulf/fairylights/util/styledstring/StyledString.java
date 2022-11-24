@@ -2,10 +2,10 @@ package me.paulf.fairylights.util.styledstring;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -494,11 +494,11 @@ public final class StyledString implements Comparable<StyledString>, CharSequenc
         return new StyledString(value, newStyling);
     }
 
-    public StyledString withStyling(final TextFormatting formatting, final boolean state) {
+    public StyledString withStyling(final ChatFormatting formatting, final boolean state) {
         return this.withStyling(0, this.length(), formatting, state);
     }
 
-    public StyledString withStyling(final int beginIndex, final int endIndex, final TextFormatting formatting, final boolean state) {
+    public StyledString withStyling(final int beginIndex, final int endIndex, final ChatFormatting formatting, final boolean state) {
         if (beginIndex < 0) {
             throw new StringIndexOutOfBoundsException(beginIndex);
         }
@@ -525,19 +525,19 @@ public final class StyledString implements Comparable<StyledString>, CharSequenc
         return this.value;
     }
 
-    public ITextComponent toTextComponent() {
+    public Component toTextComponent() {
         final String value = this.value;
         if (value.length() == 0) {
-            return new StringTextComponent("");
+            return new TextComponent("");
         }
-        IFormattableTextComponent text = null;
+        MutableComponent text = null;
         final Style[] styling = this.styling;
         final StringBuilder bob = new StringBuilder();
         Style currentStyle = styling[0];
         for (int i = 0; ; ) {
             final Style style = i < value.length() ? styling[i] : null;
             if (!currentStyle.equals(style)) {
-                final IFormattableTextComponent t = new StringTextComponent(bob.toString());
+                final MutableComponent t = new TextComponent(bob.toString());
                 t.mergeStyle(currentStyle.getColor());
                 if (currentStyle.isObfuscated()) t.mergeStyle(TextFormatting.OBFUSCATED);
                 if (currentStyle.isBold()) t.mergeStyle(TextFormatting.BOLD);

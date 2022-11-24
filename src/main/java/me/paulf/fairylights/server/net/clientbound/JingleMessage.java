@@ -7,7 +7,7 @@ import me.paulf.fairylights.server.jingle.Jingle;
 import me.paulf.fairylights.server.net.ClientMessageContext;
 import me.paulf.fairylights.server.net.ConnectionMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 import java.io.IOException;
 import java.util.function.BiConsumer;
@@ -26,14 +26,14 @@ public final class JingleMessage extends ConnectionMessage {
     }
 
     @Override
-    public void encode(final PacketBuffer buf) {
+    public void encode(final FriendlyByteBuf buf) {
         super.encode(buf);
         buf.writeVarInt(this.lightOffset);
         this.jingle.write(buf);
     }
 
     @Override
-    public void decode(final PacketBuffer buf) {
+    public void decode(final FriendlyByteBuf buf) {
         super.decode(buf);
         this.lightOffset = buf.readVarInt();
         this.jingle = Jingle.read(buf);

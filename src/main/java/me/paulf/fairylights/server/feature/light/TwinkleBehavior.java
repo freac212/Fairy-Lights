@@ -4,8 +4,8 @@ import me.paulf.fairylights.util.CubicBezier;
 import me.paulf.fairylights.util.Mth;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 public class TwinkleBehavior implements BrightnessLightBehavior {
     private static final CubicBezier EASE_IN_OUT = new CubicBezier(0.4F, 0, 0.6F, 1);
@@ -33,7 +33,7 @@ public class TwinkleBehavior implements BrightnessLightBehavior {
     }
 
     @Override
-    public void tick(final World world, final Vector3d origin, final Light<?> light) {
+    public void tick(final Level world, final Vec3 origin, final Light<?> light) {
         this.logic.tick(world.rand, this.powered);
     }
 

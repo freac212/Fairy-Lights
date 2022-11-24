@@ -3,20 +3,20 @@ package me.paulf.fairylights.util.crafting.ingredient;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.item.crafting.RecipeItemHelper;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.Tag;
 
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
 public class LazyTagIngredient extends Ingredient {
-    private final ITag<Item> tag;
+    private final Tag<Item> tag;
 
-    private LazyTagIngredient(final ITag<Item> tag) {
+    private LazyTagIngredient(final Tag<Item> tag) {
         super(Stream.empty());
         this.tag = tag;
     }

@@ -8,25 +8,24 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.RootCommandNode;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.network.play.ClientPlayNetHandler;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.ICommandSource;
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.entity.Entity;
-import net.minecraft.profiler.EmptyProfiler;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -52,12 +51,12 @@ public final class ClientCommandProvider {
 
     private void onKeyPressedEvent(final GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
         if (event.getGui() instanceof ChatScreen) {
-            final ClientPlayNetHandler net = Minecraft.getInstance().getConnection();
+            final ClientPacketListener net = Minecraft.getInstance().getConnection();
             if (net == null) {
                 return;
             }
-            final RootCommandNode<ISuggestionProvider> root = net.getCommandDispatcher().getRoot();
-            for (final ImmutableMap.Entry<String, CommandBuilder> e : this.builders.entrySet()) {
+            final RootCommandNode<SharedSuggestionProvider> root = net.getCommands().getRoot(); // Doesn't seem to be complaining...
+            for (final Map.Entry<String, CommandBuilder> e : this.builders.entrySet()) {
                 if (root.getChild(e.getKey()) == null) {
                     root.addChild(e.getValue().build(new SuggestionHelper()).build());
                 }
@@ -69,18 +68,19 @@ public final class ClientCommandProvider {
         final String message = event.getMessage();
         if (this.chatPredicate.matcher(message).matches()) {
             event.setCanceled(true);
-            Minecraft.getInstance().ingameGUI.getChatGUI().addToSentMessages(message);
-            final ClientPlayerEntity user = Minecraft.getInstance().player;
+            Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(message)); // eeeee - That was the suggested fix: Component.nullToEmpty(message)
+            final Player user = Minecraft.getInstance().player;
             if (user != null) {
-                this.commands.handleCommand(this.createSource(user), message);
+                this.commands.performCommand((CommandSourceStack) this.createSource(user), message); // This casting isn't scary at all noooo ....
             }
         }
     }
 
     private CommandSource createSource(final Entity entity) {
         //noinspection ConstantConditions
-        return new CommandSource(new NoLoggingSource(entity), entity.getPositionVec(), entity.getPitchYaw(), null, 4, entity.getName().getString(), entity.getDisplayName(), DummyServer.INSTANCE, entity);
+        return new CommandSource(new NoLoggingSource(entity), entity.position(), entity.get(), null, 4, entity.getName().getString(), entity.getDisplayName(), DummyServer.INSTANCE, entity);
     }
+    // ^ Hopefully entity.position() is okay, there's a getter, but it requires a float that I'm not aware of.
 
     public void register(final IEventBus bus) {
         bus.addListener(this::onKeyPressedEvent);
@@ -110,7 +110,7 @@ public final class ClientCommandProvider {
             for (final CommandBuilder builder : this.builders) {
                 map.put(dispatcher.register(builder.build(new ExecutionHelper())).getName(), builder);
             }
-            ObfuscationReflectionHelper.setPrivateValue(Commands.class, commands, dispatcher, "field_197062_b");
+            ObfuscationReflectionHelper.setPrivateValue(Commands.class, commands, dispatcher, "dispatcher");
             final ImmutableMap<String, CommandBuilder> builders = map.build();
             final Pattern pattern = Pattern.compile(
                 String.format(

@@ -8,11 +8,11 @@ import me.paulf.fairylights.server.net.ConnectionMessage;
 import me.paulf.fairylights.server.net.ServerMessageContext;
 import me.paulf.fairylights.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.function.BiConsumer;
@@ -24,7 +24,7 @@ public final class InteractionConnectionMessage extends ConnectionMessage {
 
     private PlayerAction type;
 
-    private Vector3d hit;
+    private Vec3 hit;
 
     private FeatureType featureType;
 
@@ -41,7 +41,7 @@ public final class InteractionConnectionMessage extends ConnectionMessage {
     }
 
     @Override
-    public void encode(final PacketBuffer buf) {
+    public void encode(final FriendlyByteBuf buf) {
         super.encode(buf);
         buf.writeByte(this.type.ordinal());
         buf.writeDouble(this.hit.x);
@@ -52,10 +52,10 @@ public final class InteractionConnectionMessage extends ConnectionMessage {
     }
 
     @Override
-    public void decode(final PacketBuffer buf) {
+    public void decode(final FriendlyByteBuf buf) {
         super.decode(buf);
         this.type = Utils.getEnumValue(PlayerAction.class, buf.readUnsignedByte());
-        this.hit = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+        this.hit = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
         this.featureType = FeatureType.fromId(buf.readVarInt());
         this.featureId = buf.readVarInt();
     }
@@ -63,7 +63,7 @@ public final class InteractionConnectionMessage extends ConnectionMessage {
     public static final class Handler implements BiConsumer<InteractionConnectionMessage, ServerMessageContext> {
         @Override
         public void accept(final InteractionConnectionMessage message, final ServerMessageContext context) {
-            final ServerPlayerEntity player = context.getPlayer();
+            final ServerPlayer player = context.getPlayer();
             getConnection(message, c -> true, player.world).ifPresent(connection -> {
                 if (connection.isModifiable(player) &&
                     player.getPositionVec().squareDistanceTo(Vector3d.copy(connection.getFastener().getPos())) < RANGE &&

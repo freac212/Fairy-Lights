@@ -13,10 +13,10 @@ import me.paulf.fairylights.util.styledstring.StyledString;
 import me.paulf.fairylights.util.styledstring.StylingPresence;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -55,11 +55,11 @@ public final class EditLetteredConnectionScreen<C extends Connection & Lettered>
         this.minecraft.keyboardListener.enableRepeatEvents(true);
         final int pad = 4;
         final int buttonWidth = 150;
-        this.doneBtn = this.addButton(new Button(this.width / 2 - pad - buttonWidth, this.height / 4 + 120 + 12, buttonWidth, 20, new TranslationTextComponent("gui.done"), b -> {
+        this.doneBtn = this.addButton(new Button(this.width / 2 - pad - buttonWidth, this.height / 2 + 120 + 12, buttonWidth, 20, new TranslationTextComponent("gui.done"), b -> {
             FairyLights.NETWORK.sendToServer(new EditLetteredConnectionMessage<>(this.connection, this.textField.getValue()));
             this.closeScreen();
         }));
-        this.cancelBtn = this.addButton(new Button(this.width / 2 + pad, this.height / 4 + 120 + 12, buttonWidth, 20, new TranslationTextComponent("gui.cancel"), b -> this.closeScreen()));
+        this.cancelBtn = this.addButton(new Button(this.width / 2 + pad, this.height / 2 + 120 + 12, buttonWidth, 20, new TranslationTextComponent("gui.cancel"), b -> this.closeScreen()));
         final int textFieldX = this.width / 2 - 150;
         final int textFieldY = this.height / 2 - 10;
         int buttonX = textFieldX;

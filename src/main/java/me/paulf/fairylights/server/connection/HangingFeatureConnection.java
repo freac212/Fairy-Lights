@@ -8,9 +8,9 @@ import me.paulf.fairylights.server.collision.FeatureCollisionTree;
 import me.paulf.fairylights.server.feature.HangingFeature;
 import me.paulf.fairylights.util.AABBBuilder;
 import me.paulf.fairylights.util.matrix.MatrixStack;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public abstract class HangingFeatureConnection<F extends HangingFeature> extends
 
     protected F[] features = this.createFeatures(0);
 
-    public HangingFeatureConnection(final ConnectionType<? extends HangingFeatureConnection<F>> type, final World world, final Fastener<?> fastener, final UUID uuid) {
+    public HangingFeatureConnection(final ConnectionType<? extends HangingFeatureConnection<F>> type, final Level world, final Fastener<?> fastener, final UUID uuid) {
         super(type, world, fastener, uuid);
     }
 
@@ -51,9 +51,9 @@ public abstract class HangingFeatureConnection<F extends HangingFeature> extends
             final F feature;
             if (!relocated && prev != null && index < prev.length && this.canReuse(prev[index], index)) {
                 feature = prev[index];
-                feature.set(new Vector3d(x, y, z), yaw, pitch);
+                feature.set(new Vec3(x, y, z), yaw, pitch);
             } else {
-                feature = this.createFeature(index, new Vector3d(x, y, z), yaw, pitch);
+                feature = this.createFeature(index, new Vec3(x, y, z), yaw, pitch);
             }
             this.updateFeature(feature);
             features.add(feature);
@@ -68,7 +68,7 @@ public abstract class HangingFeatureConnection<F extends HangingFeature> extends
 
     protected abstract F[] createFeatures(int length);
 
-    protected abstract F createFeature(int index, Vector3d point, float yaw, final float pitch);
+    protected abstract F createFeature(int index, Vec3 point, float yaw, final float pitch);
 
     protected abstract float getFeatureSpacing();
 
@@ -79,12 +79,12 @@ public abstract class HangingFeatureConnection<F extends HangingFeature> extends
     protected void onAfterUpdateFeatures() {}
 
     @Override
-    public void addCollision(final CollidableList.Builder collision, final Vector3d origin) {
+    public void addCollision(final CollidableList.Builder collision, final Vec3 origin) {
         super.addCollision(collision, origin);
         if (this.features.length > 0) {
             final MatrixStack matrix = new MatrixStack();
             collision.add(FeatureCollisionTree.build(FEATURE, this.features, f -> {
-                final Vector3d pos = f.getPoint();
+                final Vec3 pos = f.getPoint();
                 final double x = origin.x + pos.x;
                 final double y = origin.y + pos.y;
                 final double z = origin.z + pos.z;
@@ -95,7 +95,7 @@ public abstract class HangingFeatureConnection<F extends HangingFeature> extends
                 }
                 matrix.translate(0.0F, -f.getDescent(), 0.0F);
                 final AABBBuilder bounds = new AABBBuilder();
-                final AxisAlignedBB bb = f.getBounds().grow(0.01D);
+                final AABB bb = f.getBounds().grow(0.01D);
                 final Vector3d[] verts = {
                     new Vector3d(bb.minX, bb.minY, bb.minZ),
                     new Vector3d(bb.maxX, bb.minY, bb.minZ),

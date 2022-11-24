@@ -13,14 +13,14 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.LazyOptional;
@@ -40,10 +40,10 @@ public abstract class AbstractFastener<F extends FastenerAccessor> implements Fa
 
     private final Map<UUID, Incoming> incoming = new HashMap<>();
 
-    protected AxisAlignedBB bounds = TileEntity.INFINITE_EXTENT_AABB;
+    protected AABB bounds = BlockEntity.INFINITE_EXTENT_AABB;
 
     @Nullable
-    private World world;
+    private Level world;
 
     private boolean dirty;
 
@@ -68,7 +68,7 @@ public abstract class AbstractFastener<F extends FastenerAccessor> implements Fa
     }
 
     @Override
-    public AxisAlignedBB getBounds() {
+    public AABB getBounds() {
         return this.bounds;
     }
 
@@ -76,21 +76,21 @@ public abstract class AbstractFastener<F extends FastenerAccessor> implements Fa
     public abstract BlockPos getPos();
 
     @Override
-    public void setWorld(final World world) {
+    public void setWorld(final Level world) {
         this.world = world;
         this.outgoing.values().forEach(c -> c.setWorld(world));
     }
 
     @Nullable
     @Override
-    public World getWorld() {
+    public Level getWorld() {
         return this.world;
     }
 
     @Override
     public boolean update() {
         final Iterator<Connection> it = this.outgoing.values().iterator();
-        final Vector3d fromOffset = this.getConnectionPoint();
+        final Vec3 fromOffset = this.getConnectionPoint();
         boolean dirty = this.dirty;
         this.dirty = false;
         while (it.hasNext()) {
@@ -123,7 +123,7 @@ public abstract class AbstractFastener<F extends FastenerAccessor> implements Fa
 
     protected void calculateBoundingBox() {
         if (this.outgoing.isEmpty()) {
-            this.bounds = new AxisAlignedBB(this.getPos());
+            this.bounds = new AABB(this.getPos());
             return;
         }
         final AABBBuilder builder = new AABBBuilder();
@@ -144,13 +144,13 @@ public abstract class AbstractFastener<F extends FastenerAccessor> implements Fa
     }
 
     @Override
-    public void dropItems(final World world, final BlockPos pos) {
+    public void dropItems(final Level world, final BlockPos pos) {
         for (final Connection connection : this.getAllConnections()) {
             this.drop(world, pos, connection);
         }
     }
 
-    private void drop(final World world, final BlockPos pos, final Connection connection) {
+    private void drop(final Level world, final BlockPos pos, final Connection connection) {
         if (!connection.shouldDrop()) return;
         final float offsetX = world.rand.nextFloat() * 0.8F + 0.1F;
         final float offsetY = world.rand.nextFloat() * 0.8F + 0.1F;

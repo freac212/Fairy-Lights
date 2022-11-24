@@ -4,16 +4,18 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import me.paulf.fairylights.server.feature.light.Light;
 import me.paulf.fairylights.server.feature.light.MultiLightBehavior;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
 
 public class IcicleLightsModel extends LightModel<MultiLightBehavior> {
     private final List<ColorLightModel> bulbs;
 
     public IcicleLightsModel(final int lights) {
-        final ModelRenderer connector = new ModelRenderer(this, 77, 0);
+        final ModelPart connector = new ModelPart(this, 77, 0);
         connector.setRotationPoint(0, 0, 0);
         connector.addBox(-1, -0.5F, -1, 2, 2, 2, -0.05F);
         this.unlit.addChild(connector);

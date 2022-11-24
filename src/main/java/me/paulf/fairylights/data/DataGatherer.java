@@ -10,10 +10,10 @@ import me.paulf.fairylights.server.item.crafting.FLCraftingRecipes;
 import me.paulf.fairylights.util.styledstring.StyledString;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.LootTableProvider;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -22,7 +22,7 @@ import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTableManager;
 import net.minecraft.loot.ValidationTracker;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,8 +53,8 @@ public final class DataGatherer {
         }
 
         @Override
-        protected void registerRecipes(final Consumer<IFinishedRecipe> consumer) {
-            final CompoundNBT nbt = new CompoundNBT();
+        protected void registerRecipes(final Consumer<FinishedRecipe> consumer) {
+            final CompoundTag nbt = new CompoundTag();
             nbt.put("text", StyledString.serialize(new StyledString()));
             ShapedRecipeBuilder.shapedRecipe(FLItems.LETTER_BUNTING.get())
                 .patternLine("I-I")

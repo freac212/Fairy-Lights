@@ -1,11 +1,11 @@
 package me.paulf.fairylights.server.net;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 import java.io.IOException;
 
 public interface Message {
-    void encode(final PacketBuffer buf);
+    void encode(final FriendlyByteBuf buf);
 
-    void decode(final PacketBuffer buf);
+    void decode(final FriendlyByteBuf buf);
 }

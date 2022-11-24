@@ -3,22 +3,22 @@ package me.paulf.fairylights.server.fastener;
 import me.paulf.fairylights.server.fastener.accessor.PlayerFastenerAccessor;
 import me.paulf.fairylights.server.connection.Connection;
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.math.vector.Vector3d;
 
-public final class PlayerFastener extends EntityFastener<PlayerEntity> {
-    public PlayerFastener(final PlayerEntity entity) {
+public final class PlayerFastener extends EntityFastener<Player> {
+    public PlayerFastener(final Player entity) {
         super(entity);
     }
 
     @Override
-    public Vector3d getConnectionPoint() {
-        final Vector3d point = super.getConnectionPoint();
+    public Vec3 getConnectionPoint() {
+        final Vec3 point = super.getConnectionPoint();
         if (this.entity.isElytraFlying()) {
             return point;
         }

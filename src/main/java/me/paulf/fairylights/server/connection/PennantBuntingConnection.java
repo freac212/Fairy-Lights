@@ -10,14 +10,14 @@ import me.paulf.fairylights.server.sound.FLSounds;
 import me.paulf.fairylights.util.OreDictUtils;
 import me.paulf.fairylights.util.styledstring.StyledString;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -32,7 +32,7 @@ public final class PennantBuntingConnection extends HangingFeatureConnection<Pen
 
     private StyledString text;
 
-    public PennantBuntingConnection(final ConnectionType<? extends PennantBuntingConnection> type, final World world, final Fastener<?> fastener, final UUID uuid) {
+    public PennantBuntingConnection(final ConnectionType<? extends PennantBuntingConnection> type, final Level world, final Fastener<?> fastener, final UUID uuid) {
         super(type, world, fastener, uuid);
         this.pattern = new ArrayList<>();
         this.text = new StyledString();
@@ -44,14 +44,14 @@ public final class PennantBuntingConnection extends HangingFeatureConnection<Pen
     }
 
     @Override
-    public void processClientAction(final PlayerEntity player, final PlayerAction action, final Intersection intersection) {
+    public void processClientAction(final Player player, final PlayerAction action, final Intersection intersection) {
         if (this.openTextGui(player, action, intersection)) {
             super.processClientAction(player, action, intersection);
         }
     }
 
     @Override
-    public boolean interact(final PlayerEntity player, final Vector3d hit, final FeatureType featureType, final int feature, final ItemStack heldStack, final Hand hand) {
+    public boolean interact(final Player player, final Vec3 hit, final FeatureType featureType, final int feature, final ItemStack heldStack, final InteractionHand hand) {
         if (featureType == FEATURE && OreDictUtils.isDye(heldStack)) {
             final int index = feature % this.pattern.size();
             final ItemStack pennant = this.pattern.get(index);

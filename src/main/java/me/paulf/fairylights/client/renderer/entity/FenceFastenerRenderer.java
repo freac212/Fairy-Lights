@@ -9,11 +9,11 @@ import me.paulf.fairylights.server.entity.FenceFastenerEntity;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.LightType;
 
 public final class FenceFastenerRenderer extends EntityRenderer<FenceFastenerEntity> {
@@ -21,7 +21,7 @@ public final class FenceFastenerRenderer extends EntityRenderer<FenceFastenerEnt
 
     private final FastenerRenderer renderer = new FastenerRenderer();
 
-    public FenceFastenerRenderer(final EntityRendererManager manager) {
+    public FenceFastenerRenderer(final EntityRenderDispatcher manager) {
         super(manager);
     }
 

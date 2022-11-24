@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.ToastGui;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
@@ -30,6 +30,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import net.minecraft.client.gui.toasts.IToast.Visibility;
+
 public class ClippyController {
     private final ImmutableMap<String, Supplier<State>> states = Stream.<Supplier<State>>of(
             NoProgressState::new,
@@ -41,7 +43,7 @@ public class ClippyController {
 
     public void init(final IEventBus modBus) {
         MinecraftForge.EVENT_BUS.addListener((final WorldEvent.Load event) -> {
-            if (event.getWorld() instanceof ClientWorld) {
+            if (event.getWorld() instanceof ClientLevel) {
                 this.reload();
             }
         });
@@ -163,16 +165,16 @@ public class ClippyController {
         }
 
         @Override
-        public Visibility func_230444_a_(final MatrixStack stack, final ToastGui toastGui, final long delta) {
+        public Visibility render(final MatrixStack stack, final ToastGui toastGui, final long delta) {
             toastGui.getMinecraft().getTextureManager().bindTexture(TEXTURE_TOASTS);
             RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             toastGui.blit(stack, 0, 0, 0, 96, 160, 32);
             toastGui.getMinecraft().getItemRenderer().renderItemAndEffectIntoGUI(null, this.stack.get(), 6 + 2, 6 + 2);
             if (this.subtitle == null) {
-                toastGui.getMinecraft().fontRenderer.func_243248_b(stack, this.title, 30.0F, 12.0F, 0xFF500050);
+                toastGui.getMinecraft().fontRenderer.draw(stack, this.title, 30.0F, 12.0F, 0xFF500050);
             } else {
-                toastGui.getMinecraft().fontRenderer.func_243248_b(stack, this.title, 30.0F, 7.0F, 0xFF500050);
-                toastGui.getMinecraft().fontRenderer.func_243248_b(stack, this.subtitle, 30.0F, 18.0F, 0xFF000000);
+                toastGui.getMinecraft().fontRenderer.draw(stack, this.title, 30.0F, 7.0F, 0xFF500050);
+                toastGui.getMinecraft().fontRenderer.draw(stack, this.subtitle, 30.0F, 18.0F, 0xFF000000);
             }
             return this.visibility;
         }

@@ -6,24 +6,26 @@ import me.paulf.fairylights.server.item.crafting.FLCraftingRecipes;
 import me.paulf.fairylights.server.string.StringType;
 import me.paulf.fairylights.server.string.StringTypes;
 import me.paulf.fairylights.util.RegistryObjects;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants.NBT;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+
+import net.minecraft.world.item.Item.Properties;
 
 public final class HangingLightsConnectionItem extends ConnectionItem {
     public HangingLightsConnectionItem(final Properties properties) {
@@ -31,11 +33,11 @@ public final class HangingLightsConnectionItem extends ConnectionItem {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, @Nullable final World world, final List<ITextComponent> tooltip, final ITooltipFlag flag) {
-        final CompoundNBT compound = stack.getTag();
+    public void addInformation(final ItemStack stack, @Nullable final Level world, final List<Component> tooltip, final TooltipFlag flag) {
+        final CompoundTag compound = stack.getTag();
         if (compound != null) {
             final ResourceLocation name = RegistryObjects.getName(getString(compound));
-            tooltip.add(new TranslationTextComponent("item." + name.getNamespace() + "." + name.getPath()).mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslatableComponent("item." + name.getNamespace() + "." + name.getPath()).mergeStyle(TextFormatting.GRAY));
         }
         if (compound != null && compound.contains("pattern", NBT.TAG_LIST)) {
             final ListNBT tagList = compound.getList("pattern", NBT.TAG_COMPOUND);

@@ -1,9 +1,11 @@
 package me.paulf.fairylights.client.model.light;
 
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
+
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
 
 public class JackOLanternLightModel extends ColorLightModel {
     public JackOLanternLightModel() {
@@ -11,7 +13,7 @@ public class JackOLanternLightModel extends ColorLightModel {
         final BulbBuilder pumpkin = bulb.createChild(28, 42);
         pumpkin.addBox(-3, 0, -3, 6, 6, 6, 0);
         pumpkin.setAngles(Mth.PI, 0.0F, 0.0F);
-        final ModelRenderer leaf1 = new ModelRenderer(this, 12, 18);
+        final ModelPart leaf1 = new ModelPart(this, 12, 18);
         leaf1.setRotationPoint(0.5F, 0, 0.5F);
         leaf1.addBox(0, -0.5F, 0, 2, 1, 2, 0);
         final Vector3f vec = new Vector3f(-1.0F, 0.0F, 1.0F);

@@ -16,7 +16,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -39,13 +39,13 @@ public final class JinglerCommand {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final SimpleCommandExceptionType NO_HANGING_LIGHTS = new SimpleCommandExceptionType(new TranslationTextComponent("commands.jingler.open.failure.no_hanging_lights"));
+    private static final SimpleCommandExceptionType NO_HANGING_LIGHTS = new SimpleCommandExceptionType(new TranslatableComponent("commands.jingler.open.failure.no_hanging_lights"));
 
-    private static final DynamicCommandExceptionType DEVICE_UNAVAILABLE = new DynamicCommandExceptionType(name -> new TranslationTextComponent("commands.jingler.open.failure.device_unavailable", name));
+    private static final DynamicCommandExceptionType DEVICE_UNAVAILABLE = new DynamicCommandExceptionType(name -> new TranslatableComponent("commands.jingler.open.failure.device_unavailable", name));
 
-    private static final DynamicCommandExceptionType DEVICE_NOT_FOUND = new DynamicCommandExceptionType(name -> new TranslationTextComponent("commands.jingler.open.failure.not_found", name));
+    private static final DynamicCommandExceptionType DEVICE_NOT_FOUND = new DynamicCommandExceptionType(name -> new TranslatableComponent("commands.jingler.open.failure.not_found", name));
 
-    private static final SimpleCommandExceptionType CLOSE_FAILURE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.jingler.close.failure"));
+    private static final SimpleCommandExceptionType CLOSE_FAILURE = new SimpleCommandExceptionType(new TranslatableComponent("commands.jingler.close.failure"));
 
     public static <S> LiteralArgumentBuilder<S> register(final ClientCommandProvider.Helper<S> helper) {
         return LiteralArgumentBuilder.<S>literal("jingler")

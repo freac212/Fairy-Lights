@@ -4,12 +4,12 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import me.paulf.fairylights.server.feature.light.BrightnessLightBehavior;
 import me.paulf.fairylights.server.feature.light.Light;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class IncandescentLightModel extends LightModel<BrightnessLightBehavior> {
-    final ModelRenderer bulb;
+    final ModelPart bulb;
 
-    final ModelRenderer filament;
+    final ModelPart filament;
 
     public IncandescentLightModel() {
         this.unlit.setTextureOffset(90, 10);

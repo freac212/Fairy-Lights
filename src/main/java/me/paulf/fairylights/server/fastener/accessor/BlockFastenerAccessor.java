@@ -7,8 +7,8 @@ import me.paulf.fairylights.server.fastener.FastenerType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
@@ -27,7 +27,7 @@ public final class BlockFastenerAccessor implements FastenerAccessor {
     }
 
     @Override
-    public LazyOptional<Fastener<?>> get(final World world, final boolean load) {
+    public LazyOptional<Fastener<?>> get(final Level world, final boolean load) {
         if (load || world.isBlockPresent(this.pos)) {
             final TileEntity entity = world.getTileEntity(this.pos);
             if (entity != null) {

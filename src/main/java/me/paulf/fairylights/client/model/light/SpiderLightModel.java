@@ -1,11 +1,13 @@
 package me.paulf.fairylights.client.model.light;
 
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
+
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
 
 public class SpiderLightModel extends ColorLightModel {
     public SpiderLightModel() {
-        final ModelRenderer string = new ModelRenderer(this, 30, 6);
+        final ModelPart string = new ModelPart(this, 30, 6);
         string.addBox(-1, 0, -1, 2, 2, 2, -0.05F);
         this.unlit.addChild(string);
         final BulbBuilder bulb = this.createBulb();

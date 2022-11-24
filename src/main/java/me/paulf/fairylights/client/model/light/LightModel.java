@@ -6,22 +6,22 @@ import me.paulf.fairylights.server.feature.light.Light;
 import me.paulf.fairylights.server.feature.light.LightBehavior;
 import me.paulf.fairylights.util.AABBBuilder;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 
 import javax.annotation.Nullable;
 
 public abstract class LightModel<T extends LightBehavior> extends Model {
-    protected final ModelRenderer lit;
+    protected final ModelPart lit;
 
-    protected final ModelRenderer litTint;
+    protected final ModelPart litTint;
 
-    protected final ModelRenderer litTintGlow;
+    protected final ModelPart litTintGlow;
 
-    protected final ModelRenderer unlit;
+    protected final ModelPart unlit;
 
     protected float brightness = 1.0F;
 
@@ -32,7 +32,7 @@ public abstract class LightModel<T extends LightBehavior> extends Model {
     protected float blue = 1.0F;
 
     @Nullable
-    private AxisAlignedBB bounds;
+    private AABB bounds;
 
     private double floorOffset = Double.NaN;
 

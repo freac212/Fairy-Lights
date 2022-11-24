@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectLists;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +87,7 @@ public final class Jingle {
         }
     }
 
-    public void write(final PacketBuffer buf) {
+    public void write(final FriendlyByteBuf buf) {
         buf.writeString(this.title);
         buf.writeString(this.artist);
         buf.writeVarInt(this.ticks.size());

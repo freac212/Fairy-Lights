@@ -8,13 +8,13 @@ import me.paulf.fairylights.server.fastener.CreateBlockViewEvent;
 import me.paulf.fairylights.server.fastener.RegularBlockView;
 import me.paulf.fairylights.server.item.LightVariant;
 import me.paulf.fairylights.server.jingle.JingleManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.INBT;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.resources.IResourceManagerReloadListener;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -38,20 +38,20 @@ public class ServerProxy {
     }
 
     @SuppressWarnings("deprecation")
-    private void addListener(final AddReloadListenerEvent event, final Consumer<IResourceManager> listener) {
-        event.addListener((IResourceManagerReloadListener) listener::accept);
+    private void addListener(final AddReloadListenerEvent event, final Consumer<ResourceManager> listener) {
+        event.addListener((ResourceManagerReloadListener) listener::accept);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         CapabilityHandler.register();
         CapabilityManager.INSTANCE.register(LightVariant.class,  new Capability.IStorage<LightVariant>() {
             @Override
-            public INBT writeNBT(final Capability<LightVariant> capability, final LightVariant instance, final Direction side) {
+            public Tag writeNBT(final Capability<LightVariant> capability, final LightVariant instance, final Direction side) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public void readNBT(final Capability<LightVariant> capability, final LightVariant instance, final Direction side, final INBT nbt) {
+            public void readNBT(final Capability<LightVariant> capability, final LightVariant instance, final Direction side, final Tag nbt) {
                 throw new UnsupportedOperationException();
             }
         }, () -> {
@@ -59,7 +59,7 @@ public class ServerProxy {
         });
     }
 
-    public static void sendToPlayersWatchingChunk(final Object message, final World world, final BlockPos pos) {
+    public static void sendToPlayersWatchingChunk(final Object message, final Level world, final BlockPos pos) {
         FairyLights.NETWORK.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), message);
     }
 

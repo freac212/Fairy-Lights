@@ -14,19 +14,19 @@ import me.paulf.fairylights.server.jingle.JinglePlayer;
 import me.paulf.fairylights.server.sound.FLSounds;
 import me.paulf.fairylights.server.string.StringType;
 import me.paulf.fairylights.server.string.StringTypes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.SectionPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
@@ -73,7 +73,7 @@ public final class HangingLightsConnection extends HangingFeatureConnection<Ligh
 
     private int lightUpdateIndex;
 
-    public HangingLightsConnection(final ConnectionType<? extends HangingLightsConnection> type, final World world, final Fastener<?> fastenerOrigin, final UUID uuid) {
+    public HangingLightsConnection(final ConnectionType<? extends HangingLightsConnection> type, final Level world, final Fastener<?> fastenerOrigin, final UUID uuid) {
         super(type, world, fastenerOrigin, uuid);
         this.string = StringTypes.BLACK_STRING.get();
         this.pattern = new ArrayList<>();
@@ -93,7 +93,7 @@ public final class HangingLightsConnection extends HangingFeatureConnection<Ligh
     }
 
     @Override
-    public boolean interact(final PlayerEntity player, final Vector3d hit, final FeatureType featureType, final int feature, final ItemStack heldStack, final Hand hand) {
+    public boolean interact(final Player player, final Vec3 hit, final FeatureType featureType, final int feature, final ItemStack heldStack, final InteractionHand hand) {
         if (featureType == FEATURE && heldStack.getItem().isIn(FLCraftingRecipes.LIGHTS)) {
             final int index = feature % this.pattern.size();
             final ItemStack light = this.pattern.get(index);
@@ -244,7 +244,7 @@ public final class HangingLightsConnection extends HangingFeatureConnection<Ligh
         } catch (final ClassNotFoundException e) {
             throw new Error(e);
         }
-        ADD_TASK = ObfuscationReflectionHelper.findMethod(ServerWorldLightManager.class, "func_215586_a", int.class, int.class, phaseType, Runnable.class);
+        ADD_TASK = ObfuscationReflectionHelper.findMethod(ServerWorldLightManager.class, "addTask", int.class, int.class, phaseType, Runnable.class);
         POST_PHASE = phaseType.getEnumConstants()[1];
     }
 
@@ -278,7 +278,7 @@ public final class HangingLightsConnection extends HangingFeatureConnection<Ligh
             manager.updateSectionStatus(SectionPos.from(chunk.getPos(), l), false);
         }
         manager.enableLightSources(chunk.getPos(), true);
-        light.func_215623_a(pos, MAX_LIGHT);
+        light.onBlockEmissionIncrease(pos, MAX_LIGHT);
     }
 
     public boolean canCurrentlyPlayAJingle() {

@@ -1,8 +1,8 @@
 package me.paulf.fairylights.util;
 
 import me.paulf.fairylights.server.connection.Connection;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.NoSuchElementException;
 
@@ -88,13 +88,13 @@ public final class Catenary {
         final float[] ny = new float[this.count];
         for (int i = 0; i < this.count; i++) {
             final boolean end = this.count != other.count && i == this.count - 1;
-            nx[i] = MathHelper.lerp(delta, this.x[i], other.x[end ? other.count - 1 : i]);
-            ny[i] = MathHelper.lerp(delta, this.y[i], other.y[end ? other.count - 1 : i]);
+            nx[i] = Mth.lerp(delta, this.x[i], other.x[end ? other.count - 1 : i]);
+            ny[i] = Mth.lerp(delta, this.y[i], other.y[end ? other.count - 1 : i]);
         }
         final float angle = Mth.lerpAngle(this.yaw, other.yaw, delta);
-        final float vx = MathHelper.cos(angle);
-        final float vz = MathHelper.sin(angle);
-        return new Catenary(this.count, angle, vx, vz, nx, ny, MathHelper.lerp(delta, this.length, other.length));
+        final float vx = Mth.cos(angle);
+        final float vz = Mth.sin(angle);
+        return new Catenary(this.count, angle, vx, vz, nx, ny, Mth.lerp(delta, this.length, other.length));
     }
 
     public void visitPoints(final float spacing, final boolean center, final PointVisitor visitor) {
@@ -154,7 +154,7 @@ public final class Catenary {
                 if (t == 1.0F) {
                     return Catenary.this.x[this.index + 1] * Catenary.this.dx;
                 }
-                return MathHelper.lerp(t, Catenary.this.x[this.index], Catenary.this.x[this.index + 1]) * Catenary.this.dx;
+                return Mth.lerp(t, Catenary.this.x[this.index], Catenary.this.x[this.index + 1]) * Catenary.this.dx;
             }
 
             @Override
@@ -166,7 +166,7 @@ public final class Catenary {
                 if (t == 1.0F) {
                     return Catenary.this.y[this.index + 1];
                 }
-                return MathHelper.lerp(t, Catenary.this.y[this.index], Catenary.this.y[this.index + 1]);
+                return Mth.lerp(t, Catenary.this.y[this.index], Catenary.this.y[this.index + 1]);
             }
 
             @Override
@@ -178,12 +178,12 @@ public final class Catenary {
                 if (t == 1.0F) {
                     return Catenary.this.x[this.index + 1] * Catenary.this.dz;
                 }
-                return MathHelper.lerp(t, Catenary.this.x[this.index], Catenary.this.x[this.index + 1]) * Catenary.this.dz;
+                return Mth.lerp(t, Catenary.this.x[this.index], Catenary.this.x[this.index + 1]) * Catenary.this.dz;
             }
 
             @Override
-            public Vector3d getPos() {
-                return new Vector3d(Catenary.this.x[this.index] * Catenary.this.dx, Catenary.this.y[this.index], Catenary.this.x[this.index] * Catenary.this.dz);
+            public Vec3 getPos() {
+                return new Vec3(Catenary.this.x[this.index] * Catenary.this.dx, Catenary.this.y[this.index], Catenary.this.x[this.index] * Catenary.this.dz);
             }
 
             @Override
@@ -199,7 +199,7 @@ public final class Catenary {
                 }
                 final float dx = Catenary.this.x[this.index + 1] - Catenary.this.x[this.index];
                 final float dy = Catenary.this.y[this.index + 1] - Catenary.this.y[this.index];
-                return (float) MathHelper.atan2(dy, dx);
+                return (float) Mth.atan2(dy, dx);
             }
 
             @Override
@@ -210,7 +210,7 @@ public final class Catenary {
                 }
                 final float dx = Catenary.this.x[this.index + 1] - Catenary.this.x[this.index];
                 final float dy = Catenary.this.y[this.index + 1] - Catenary.this.y[this.index];
-                return MathHelper.sqrt(dx * dx + dy * dy);
+                return Mth.sqrt(dx * dx + dy * dy);
             }
         };
     }
@@ -230,7 +230,7 @@ public final class Catenary {
 
         float getZ(final float t);
 
-        Vector3d getPos();
+        Vec3 getPos();
 
         float getYaw();
 
@@ -247,7 +247,7 @@ public final class Catenary {
         return this.length;
     }
 
-    public static Catenary from(final Vector3d direction, final float verticalYaw, final CubicBezier bezier, final float slack) {
+    public static Catenary from(final Vec3 direction, final float verticalYaw, final CubicBezier bezier, final float slack) {
         final float dist = (float) direction.length();
         final float length;
         if (slack < 1e-2 || Math.abs(direction.x) < 1e-6 && Math.abs(direction.z) < 1e-6) {
@@ -259,17 +259,17 @@ public final class Catenary {
     }
 
     private static float lengthFunc(final CubicBezier bezier, final double length) {
-        return bezier.eval(MathHelper.clamp((float) length / Connection.MAX_LENGTH, 0, 1)) * Connection.MAX_LENGTH;
+        return bezier.eval(Mth.clamp((float) length / Connection.MAX_LENGTH, 0, 1)) * Connection.MAX_LENGTH;
     }
 
-    public static Catenary from(final Vector3d dir, final float verticalYaw, final float ropeLength) {
-        final float endX = MathHelper.sqrt(dir.x * dir.x + dir.z * dir.z);
+    public static Catenary from(final Vec3 dir, final float verticalYaw, final float ropeLength) {
+        final float endX = Mth.sqrt(dir.x * dir.x + dir.z * dir.z);
         final float endY = (float) dir.y;
-        final float angle = endX < 1e-3F ? endY < 0.0F ? verticalYaw + Mth.PI : verticalYaw : (float) MathHelper.atan2(dir.z, dir.x);
-        final float vx = MathHelper.cos(angle);
-        final float vz = MathHelper.sin(angle);
+        final float angle = endX < 1e-3F ? endY < 0.0F ? verticalYaw + Mth.PI : verticalYaw : (float) Mth.atan2(dir.z, dir.x);
+        final float vx = Mth.cos(angle);
+        final float vz = Mth.sin(angle);
         if (dir.length() > 2.0F * Connection.MAX_LENGTH) {
-            return new Catenary(2, angle, vx, vz, new float[]{0.0F, endX}, new float[]{0.0F, endY}, MathHelper.sqrt(endX * endX + endY * endY));
+            return new Catenary(2, angle, vx, vz, new float[]{0.0F, endX}, new float[]{0.0F, endY}, Mth.sqrt(endX * endX + endY * endY));
         }
         final int count = Math.max((int) (ropeLength * CatenaryUtils.SEG_LENGTH), MIN_VERTEX_COUNT);
         final float[] x = new float[count];
@@ -279,7 +279,7 @@ public final class Catenary {
         for (int i = 1; i < count; i++) {
             final float dx = x[i] - x[i - 1];
             final float dy = y[i] - y[i - 1];
-            length += MathHelper.sqrt(dx * dx + dy * dy);
+            length += Mth.sqrt(dx * dx + dy * dy);
         }
         return new Catenary(count, angle, vx, vz, x, y, length);
     }

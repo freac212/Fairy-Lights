@@ -3,9 +3,11 @@ package me.paulf.fairylights.server.item;
 import me.paulf.fairylights.server.connection.ConnectionTypes;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+
+import net.minecraft.world.item.Item.Properties;
 
 public final class TinselConnectionItem extends ConnectionItem {
     public TinselConnectionItem(final Properties properties) {
@@ -13,7 +15,7 @@ public final class TinselConnectionItem extends ConnectionItem {
     }
 
     @Override
-    public ITextComponent getDisplayName(final ItemStack stack) {
+    public Component getDisplayName(final ItemStack stack) {
         return DyeableItem.getDisplayName(stack, super.getDisplayName(stack));
     }
 

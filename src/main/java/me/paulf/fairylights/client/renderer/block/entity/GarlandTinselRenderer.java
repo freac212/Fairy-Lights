@@ -1,12 +1,12 @@
 package me.paulf.fairylights.client.renderer.block.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import me.paulf.fairylights.client.ClientProxy;
 import me.paulf.fairylights.util.Catenary;
 import me.paulf.fairylights.server.connection.GarlandTinselConnection;
 import me.paulf.fairylights.util.RandomArray;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -30,7 +30,7 @@ public class GarlandTinselRenderer extends ConnectionRenderer<GarlandTinselConne
     }
 
     @Override
-    protected void renderSegment(final GarlandTinselConnection connection, final Catenary.SegmentView it, final float delta, final MatrixStack matrix, final IRenderTypeBuffer source, final int packedLight, final int packedOverlay) {
+    protected void renderSegment(final GarlandTinselConnection connection, final Catenary.SegmentView it, final float delta, final PoseStack matrix, final MultiBufferSource source, final int packedLight, final int packedOverlay) {
         super.renderSegment(connection, it, delta, matrix, source, packedLight, packedOverlay);
         final int color = connection.getColor();
         final float r = ((color >> 16) & 0xFF) / 255.0F;

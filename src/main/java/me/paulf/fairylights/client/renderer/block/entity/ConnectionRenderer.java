@@ -1,12 +1,12 @@
 package me.paulf.fairylights.client.renderer.block.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import me.paulf.fairylights.client.ClientProxy;
 import me.paulf.fairylights.util.Catenary;
 import me.paulf.fairylights.server.connection.Connection;
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -20,13 +20,13 @@ public abstract class ConnectionRenderer<C extends Connection> {
         this.model = new WireModel(wireU, wireV, wireSize);
     }
 
-    public void render(final C conn, final float delta, final MatrixStack matrix, final IRenderTypeBuffer source, final int packedLight, final int packedOverlay) {
+    public void render(final C conn, final float delta, final PoseStack matrix, final MultiBufferSource source, final int packedLight, final int packedOverlay) {
         final Catenary currCat = conn.getCatenary();
         final Catenary prevCat = conn.getPrevCatenary();
         if (currCat != null && prevCat != null) {
             final Catenary cat = prevCat.lerp(currCat, delta);
             final Catenary.SegmentIterator it = cat.iterator();
-            final IVertexBuilder buf = ClientProxy.SOLID_TEXTURE.getBuffer(source, RenderType::getEntityCutout);
+            final VertexConsumer buf = ClientProxy.SOLID_TEXTURE.getBuffer(source, RenderType::getEntityCutout);
             final int color = this.getWireColor(conn);
             final float r = ((color >> 16) & 0xFF) / 255.0F;
             final float g = ((color >> 8) & 0xFF) / 255.0F;

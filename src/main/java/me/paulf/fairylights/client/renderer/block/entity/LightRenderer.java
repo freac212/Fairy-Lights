@@ -2,7 +2,7 @@ package me.paulf.fairylights.client.renderer.block.entity;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import me.paulf.fairylights.client.ClientProxy;
 import me.paulf.fairylights.client.TranslucentLightRenderer;
 import me.paulf.fairylights.client.model.light.CandleLanternModel;
@@ -31,7 +31,7 @@ import me.paulf.fairylights.server.feature.light.LightBehavior;
 import me.paulf.fairylights.server.item.LightVariant;
 import me.paulf.fairylights.server.item.SimpleLightVariant;
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 
 import java.util.Map;
@@ -74,8 +74,8 @@ public class LightRenderer {
     public LightRenderer() {
     }
 
-    public Data start(final IRenderTypeBuffer source) {
-        final IVertexBuilder solid = ClientProxy.SOLID_TEXTURE.getBuffer(source, RenderType::getEntityCutout);
+    public Data start(final MultiBufferSource source) {
+        final VertexConsumer solid = ClientProxy.SOLID_TEXTURE.getBuffer(source, RenderType::getEntityCutout);
         return new Data(solid, TranslucentLightRenderer.get(source, ClientProxy.TRANSLUCENT_TEXTURE));
     }
 

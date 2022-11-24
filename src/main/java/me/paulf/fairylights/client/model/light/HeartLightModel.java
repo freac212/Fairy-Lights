@@ -1,4 +1,6 @@
 package me.paulf.fairylights.client.model.light;
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
+
 
 public class HeartLightModel extends ColorLightModel {
     public HeartLightModel() {

@@ -10,9 +10,9 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.stream.Collectors;
 
@@ -30,7 +30,7 @@ public final class FairyLightsJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(final IRecipeRegistration registration) {
-        final ClientWorld world = Minecraft.getInstance().world;
+        final ClientLevel world = Minecraft.getInstance().world;
         final RecipeManager recipeManager = world.getRecipeManager();
         registration.addRecipes(
             recipeManager.getRecipes().stream()

@@ -1,4 +1,6 @@
 package me.paulf.fairylights.client.model.light;
+import me.paulf.fairylights.client.model.light.LightModel.BulbBuilder;
+
 
 public class StarLightModel extends ColorLightModel {
     public StarLightModel() {

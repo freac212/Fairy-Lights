@@ -1,12 +1,12 @@
 package me.paulf.fairylights.client.renderer.block.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import me.paulf.fairylights.server.connection.HangingLightsConnection;
 import me.paulf.fairylights.server.feature.light.Light;
 import me.paulf.fairylights.server.item.SimpleLightVariant;
 import me.paulf.fairylights.util.Mth;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class HangingLightsRenderer extends ConnectionRenderer<HangingLightsConnection> {
@@ -22,7 +22,7 @@ public class HangingLightsRenderer extends ConnectionRenderer<HangingLightsConne
     }
 
     @Override
-    public void render(final HangingLightsConnection conn, final float delta, final MatrixStack matrix, final IRenderTypeBuffer source, final int packedLight, final int packedOverlay) {
+    public void render(final HangingLightsConnection conn, final float delta, final PoseStack matrix, final MultiBufferSource source, final int packedLight, final int packedOverlay) {
         super.render(conn, delta, matrix, source, packedLight, packedOverlay);
         final Light<?>[] lights = conn.getFeatures();
         if (lights == null) {
@@ -31,7 +31,7 @@ public class HangingLightsRenderer extends ConnectionRenderer<HangingLightsConne
         final LightRenderer.Data data = this.lights.start(source);
         for (int i = 0; i < lights.length; i++) {
             final Light<?> light = lights[i];
-            final Vector3d pos = light.getPoint(delta);
+            final Vec3 pos = light.getPoint(delta);
             matrix.push();
             matrix.translate(pos.x, pos.y, pos.z);
             matrix.rotate(Vector3f.YP.rotation(-light.getYaw(delta)));

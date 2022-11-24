@@ -6,7 +6,7 @@ import me.paulf.fairylights.server.net.ConnectionMessage;
 import me.paulf.fairylights.server.net.ServerMessageContext;
 import me.paulf.fairylights.util.styledstring.StyledString;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.function.BiConsumer;
 
@@ -21,7 +21,7 @@ public class EditLetteredConnectionMessage<C extends Connection & Lettered> exte
     }
 
     @Override
-    public void encode(final PacketBuffer buf) {
+    public void encode(final FriendlyByteBuf buf) {
         super.encode(buf);
         buf.writeCompoundTag(StyledString.serialize(this.text));
     }
